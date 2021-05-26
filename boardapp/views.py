@@ -19,7 +19,11 @@ def boardList(request):
         list.append(data)
 
     return render(request, 'board/board_list.html', {"curpage": curpage, "totalpage": totalpage, "list": list})
-
+'''
+  (11, '홍길동', '성동구 송정동 바퀴벌레 조치 바랍니다(수정)', <cx_Oracle.LOB ob
+   ject at 0x0000025FEF54CAE0>)
+   
+'''
 
 def boardDetail(request):
     no=request.GET['no']
@@ -30,7 +34,7 @@ def boardDetail(request):
             "subject":board_detail[2],
             "content":board_detail[3],
             "regdate":board_detail[4],
-            "hit":board_detail[5]}
+            "hit":board_detail[5],"result":False}
     return render(request,'board/board_detail.html',data)
 
 
@@ -51,14 +55,30 @@ def boardInsertOk(request):
     return redirect('/board/?page=1')
 
 def boardUpdate(request):
-    pass
+    no=request.GET['no']
+    data=models.boardUpdateData(int(no))
+    updata={"no":data[0],"name":data[1],"subject":data[2],"content":data[3]}
+    return render(request,'board/board_update.html',{"updata":updata})
 
 def boardUpdateOk(request):
-    pass
+    name=request.POST['name']
+    no=request.POST['no']
+    subject=request.POST['subject']
+    content=request.POST['content']
+    pwd=request.POST['pwd']
+    print(name,no,subject,content,pwd)
+    data=(name,subject,content,no,pwd)
+    result=models.boardUpdate(data)
+    return render(request,'board/board_update_ok.html',{"no":no,"result":result})
 
 def boardDelete(request):
-    pass
+    no=request.GET['no']
+    return render(request,'board/board_delete.html',{"no":no})
 
 def boardDeleteOk(request):
-    pass
+    no=request.POST['no']
+    pwd=request.POST['pwd']
+    #print("no="+no,"pwd="+pwd)
+    result=models.boardDelete(int(no),pwd)
+    return render(request,'board/board_delete_ok.html',{"result":result})
 
