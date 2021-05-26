@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style type="text/css">
+        .row{
+           margin:0px auto;
+           width:1000px;
+        }
+        h1{
+           text-align:center
+        }
+    </style>
+</head>
+<body>
+     <div style="height:50px"></div>
+     <div class="container">
+         <div class="row">
+             <h1>자유 게시판</h1>
+             <table class="table">
+                 <tr>
+                     <td>
+                         <a href="insert/" class="btn btn-sm btn-success">새글</a>
+                     </td>
+                 </tr>
+             </table>
+             <div style="height:500px">
+             <table class="table table-striped">
+                 <tr class="success">
+                     <th class="text-center" width="10%">번호</th>
+                     <th class="text-center" width="45%">제목</th>
+                     <th class="text-center" width="15%">이름</th>
+                     <th class="text-center" width="20%">작성일</th>
+                     <th class="text-center" width="10%">조회수</th>
+                 </tr>
+                 {% for row in list %}
+                 <tr>
+                     <td class="text-center" width="10%">{{row.no}}</td>
+                     <td width="45%">
+                         <a href="detail/?no={{row.no}}">{{row.subject}}</a>
+                     </td>
+                     <td class="text-center" width="15%">{{row.name}}</td>
+                     <td class="text-center" width="20%">{{row.regdate}}</td>
+                     <td class="text-center" width="10%">{{row.hit}}</td>
+                 </tr>
+                 {% endfor %}
+             </table>
+             </div>
+             <table class="table">
+                 <tr>
+                     <td class="text-center">
+                         {%  if curpage > 1 %}
+                         <a href="?page={{curpage|add:-1}}" class="btn btn-sm btn-primary">이전</a>
+                         {% endif %}
+                         {{curpage}} page / {{totalpage}} pages
+                         {% if curpage < totalpage %}
+                         <a href="?page={{curpage|add:+1}}" class="btn btn-sm btn-primary">다음</a>
+                         {% endif %}
+                     </td>
+                 </tr>
+             </table>
+         </div>
+     </div>
+</body>
+</html>
